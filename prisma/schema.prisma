@@ -1,0 +1,48 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model user {
+  email      String    @id @db.VarChar(50)
+  username   String    @unique(map: "username") @db.VarChar(50)
+  first_name String    @db.VarChar(50)
+  last_name  String    @db.VarChar(50)
+  password   String    @db.Char(60)
+  role       String    @default("user") @db.VarChar(80)
+  user_role  user_role @relation(fields: [role], references: [id], onUpdate: Restrict)
+  review     review[]
+
+  @@index([role], map: "role")
+}
+
+model user_role {
+  id   String @id @db.VarChar(80)
+  name String @db.VarChar(80)
+  user user[]
+}
+
+model game {
+  id          Int    @id @unique  @default(autoincrement())
+  name        String @db.VarChar(50)
+  description String @db.Text
+  review review[]
+
+  @@fulltext([name])
+}
+
+model review {
+  id       Int    @id @default(autoincrement())
+  user     user   @relation(fields: [username], references: [username])
+  username String
+  game     game   @relation(fields: [gameId], references: [id])
+  gameId   Int
+
+  content    String
+  isApproved Boolean    @default(false)
+}
