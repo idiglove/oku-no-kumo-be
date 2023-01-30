@@ -1,0 +1,22 @@
+
+strategy
+1. id
+2. gameId
+3. userId
+4. content
+
+review_comments
+1. id
+2. gameId
+3. userId
+4. content
+
+review_likes
+1. id
+2. gameId
+3. userId
+
+
+
+
+
