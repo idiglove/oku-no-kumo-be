@@ -1,9 +1,9 @@
-import { RequestHandler } from "express";
+import { RequestHandler, Request, Response } from "express";
 
 import { PrismaClient, Prisma } from "@prisma/client";
 const prisma = new PrismaClient();
 
-export const approveReview: RequestHandler = async (req, res) => {
+export const approveReview: RequestHandler = async (req: Request, res: Response) => {
     const reviewId: number = Number(req.params.reviewId);
 
     // TODO? Turn not found checker to middleware
