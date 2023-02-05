@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 
-import * as reviewsController from "../../../controllers/reivewsController.js";
+import * as reviewsController from "../../../controllers/reviewsController.js";
 
 import { isAdmin } from "../../../controllers/utils/auth.js";
 
