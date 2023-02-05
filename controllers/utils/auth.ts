@@ -1,6 +1,15 @@
-import { RequestHandler } from "express";
+import * as dotenv from "dotenv";
+dotenv.config();
 
-export const isAdmin: RequestHandler = (req: any, res: any, next: any) => {
+import { RequestHandler, Request, Response, NextFunction } from "express";
+
+import jwt from "jsonwebtoken";
+
+export const isAdmin: RequestHandler = (
+    req: Request,
+    res: Response,
+    next: NextFunction
+): void => {
     /*  
         Verify if admin
         if not authorized, then
@@ -10,4 +19,14 @@ export const isAdmin: RequestHandler = (req: any, res: any, next: any) => {
 
     //if Admin then proceed to next middleware/controller
     next();
+};
+
+export const createAccessToken: Function = (user: object) => {
+    const secret = process.env.secret;
+
+    if (typeof secret !== "string") {
+        return null;
+    }
+
+    return jwt.sign(user, secret, { expiresIn: "2d" });
 };
