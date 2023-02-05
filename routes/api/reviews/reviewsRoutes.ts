@@ -1,8 +1,8 @@
 import express, { Request, Response } from "express";
 
-import * as reviewsController from "../../../controllers/reviewsController.js";
+import * as reviewsController from "../../../controllers/reviewsController";
 
-import { isAdmin } from "../../../controllers/utils/auth.js";
+import { isAdmin } from "../../../controllers/utils/auth";
 
 const reviewsRouter = express.Router();
 
