@@ -1,5 +1,9 @@
 import express, { Request, Response } from "express";
 
+import * as reviewsController from "../../../controllers/reviewsController.js";
+
+import { isAdmin } from "../../../controllers/utils/auth.js";
+
 const reviewsRouter = express.Router();
 
 reviewsRouter.get("/", (req: Request, res: Response) => {
@@ -7,5 +11,10 @@ reviewsRouter.get("/", (req: Request, res: Response) => {
 
     res.send("You have acessed getting all reviews route");
 });
+
+reviewsRouter.patch("/:reviewId/approve",
+    isAdmin,
+    reviewsController.approveReview
+)
 
 export default reviewsRouter;
