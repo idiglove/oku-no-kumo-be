@@ -1,10 +1,10 @@
-import { RequestHandler } from "express";
+import { RequestHandler, Request, Response } from "express";
 
 import { PrismaClient } from "@prisma/client";
 import { create } from "domain";
 const prisma = new PrismaClient();
 
-export const addReview: RequestHandler = async (req, res) => {
+export const addReview: RequestHandler = async (req: Request, res: Response) => {
     const gameId: number = Number(req.params.gameId);
 
     const { content, username } = req.body;
@@ -20,7 +20,7 @@ export const addReview: RequestHandler = async (req, res) => {
 
     if (createdReview) {
         return res.status(201).send({
-            heading: `Reivew has been created`,
+            heading: `Review has been created`,
             data: createdReview,
         });
     }
