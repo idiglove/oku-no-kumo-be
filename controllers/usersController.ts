@@ -48,24 +48,32 @@ export const checkDuplicateEmail: RequestHandler = async (
 ) => {
     const { email, username } = req.body;
 
-    const resultEmail: object | null = await prisma.user.findUnique({
+    const resultEmail: { email: string } | null = await prisma.user.findUnique({
         where: { email: email },
         select: {
             email: true,
         },
     });
 
-    const resultUsername: object | null = await prisma.user.findUnique({
-        where: { username: username },
-        select: {
-            username: true,
-        },
-    });
+    const resultUsername: { username: string } | null =
+        await prisma.user.findUnique({
+            where: { username: username },
+            select: {
+                username: true,
+            },
+        });
 
-    if (resultEmail !== null || resultUsername !== null) {
+    if (resultEmail !== null) {
         return res.status(400).send({
-            heading: "Duplicate email/username found",
-            message: "Please login.",
+            heading: "Email already taken",
+            message: "Please login or register using another email.",
+        });
+    }
+
+    if (resultUsername !== null) {
+        return res.status(400).send({
+            heading: "Username already taken",
+            message: "Please login or register using another username.",
         });
     }
 
