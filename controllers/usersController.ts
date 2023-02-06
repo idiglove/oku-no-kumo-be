@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Prisma } from "@prisma/client";
 
 import { RequestHandler, Request, Response, NextFunction } from "express";
 
@@ -78,25 +78,18 @@ export const loginUser: RequestHandler = async (
 ) => {
     const { emailOrUsername, password } = req.body;
 
-    type User = {
-        email: string;
-        username: string;
-        first_name: string;
-        last_name: string;
-        password: string;
-        role: string;
-    };
+    const userFoundByEmail: Prisma.userCreateInput | null =
+        await prisma.user.findUnique({
+            where: { email: emailOrUsername },
+        });
 
-    const userFoundByEmail: User | null = await prisma.user.findUnique({
-        where: { email: emailOrUsername },
-    });
-
-    const userFoundByUsername: User | null = await prisma.user.findUnique({
-        where: { username: emailOrUsername },
-    });
+    const userFoundByUsername: Prisma.userCreateInput | null =
+        await prisma.user.findUnique({
+            where: { username: emailOrUsername },
+        });
 
     let hashFound: string;
-    let user: User;
+    let user: Prisma.userCreateInput;
 
     if (userFoundByEmail !== null) {
         hashFound = userFoundByEmail.password;
@@ -120,7 +113,7 @@ export const loginUser: RequestHandler = async (
         });
     }
 
-    const { ["password"]: remove, ...userWithoutHash } = user;
+    const { password: remove, ...userWithoutHash } = user;
 
     const token = createAccessToken(userWithoutHash);
 
