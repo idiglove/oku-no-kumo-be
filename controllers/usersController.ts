@@ -5,6 +5,11 @@ import { RequestHandler, Request, Response, NextFunction } from "express";
 
 import { createAccessToken } from "./utils/auth.js";
 
+import {
+    SERVER_ERR_OBJ,
+    HEADING_SUCCESS_REGISTRATION,
+} from "./utils/constants";
+
 const prisma = new PrismaClient();
 
 export const getAllUsers: RequestHandler = (req, res) => {
@@ -29,16 +34,13 @@ export const registerUser: RequestHandler = async (
 
     if (newUser) {
         return res.json({
-            heading: "Registration successful",
+            heading: HEADING_SUCCESS_REGISTRATION,
             message:
                 "You can now log in using your registered email or username.",
         });
     }
 
-    return res.status(500).send({
-        heading: "Server error",
-        message: "Please try again.",
-    });
+    return res.status(500).send(SERVER_ERR_OBJ);
 };
 
 export const checkDuplicateEmail: RequestHandler = async (
@@ -63,14 +65,14 @@ export const checkDuplicateEmail: RequestHandler = async (
             },
         });
 
-    if (resultEmail !== null) {
+    if (resultEmail) {
         return res.status(400).send({
             heading: "Email already taken",
             message: "Please login or register using another email.",
         });
     }
 
-    if (resultUsername !== null) {
+    if (resultUsername) {
         return res.status(400).send({
             heading: "Username already taken",
             message: "Please login or register using another username.",
@@ -99,10 +101,10 @@ export const loginUser: RequestHandler = async (
     let hashFound: string;
     let user: Prisma.userCreateInput;
 
-    if (userFoundByEmail !== null) {
+    if (userFoundByEmail) {
         hashFound = userFoundByEmail.password;
         user = userFoundByEmail;
-    } else if (userFoundByUsername !== null) {
+    } else if (userFoundByUsername) {
         hashFound = userFoundByUsername.password;
         user = userFoundByUsername;
     } else {
@@ -126,10 +128,7 @@ export const loginUser: RequestHandler = async (
     const token = createAccessToken(userWithoutHash);
 
     if (token === null) {
-        return res.status(500).send({
-            heading: "Server error",
-            message: "Please try again.",
-        });
+        return res.status(500).send(SERVER_ERR_OBJ);
     }
 
     return res.status(200).send({

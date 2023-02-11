@@ -3,7 +3,12 @@ import { RequestHandler, Request, Response } from "express";
 import { PrismaClient, Prisma } from "@prisma/client";
 const prisma = new PrismaClient();
 
-export const approveReview: RequestHandler = async (req: Request, res: Response) => {
+import { SERVER_ERR_OBJ } from "./utils/constants";
+
+export const approveReview: RequestHandler = async (
+    req: Request,
+    res: Response
+) => {
     const reviewId: number = Number(req.params.reviewId);
 
     // TODO? Turn not found checker to middleware
@@ -25,7 +30,7 @@ export const approveReview: RequestHandler = async (req: Request, res: Response)
         });
     }
 
-    const approvedReview : object = await prisma.review.update({
+    const approvedReview: object = await prisma.review.update({
         where: { id: reviewId },
         data: {
             isApproved: true,
@@ -39,8 +44,5 @@ export const approveReview: RequestHandler = async (req: Request, res: Response)
         });
     }
 
-    return res.status(500).send({
-        heading: "Server error",
-        message: "Please try again.",
-    });
+    return res.status(500).send(SERVER_ERR_OBJ);
 };

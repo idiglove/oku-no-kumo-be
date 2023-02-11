@@ -4,7 +4,12 @@ import { PrismaClient } from "@prisma/client";
 import { create } from "domain";
 const prisma = new PrismaClient();
 
-export const addReview: RequestHandler = async (req: Request, res: Response) => {
+import { SERVER_ERR_OBJ } from "./utils/constants";
+
+export const addReview: RequestHandler = async (
+    req: Request,
+    res: Response
+) => {
     const gameId: number = Number(req.params.gameId);
 
     const { content, username } = req.body;
@@ -25,8 +30,5 @@ export const addReview: RequestHandler = async (req: Request, res: Response) => 
         });
     }
 
-    return res.status(500).send({
-        heading: "Server error",
-        message: "Please try again.",
-    });
+    return res.status(500).send(SERVER_ERR_OBJ);
 };
