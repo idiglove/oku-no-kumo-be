@@ -88,31 +88,28 @@ export const loginUser: RequestHandler = async (
 ) => {
     const { emailOrUsername, password } = req.body;
 
-    const userFoundByEmail: Prisma.userCreateInput | null =
-        await prisma.user.findUnique({
-            where: { email: emailOrUsername },
+    const userFound: Prisma.userCreateInput | null = await prisma.user
+        .findMany({
+            where: {
+                OR: [{ email: emailOrUsername }, { username: emailOrUsername }],
+            },
+        })
+        .then((resultingArray) => {
+            if (resultingArray.length === 0) {
+                return null;
+            }
+
+            return resultingArray[0];
         });
 
-    const userFoundByUsername: Prisma.userCreateInput | null =
-        await prisma.user.findUnique({
-            where: { username: emailOrUsername },
-        });
-
-    let hashFound: string;
-    let user: Prisma.userCreateInput;
-
-    if (userFoundByEmail) {
-        hashFound = userFoundByEmail.password;
-        user = userFoundByEmail;
-    } else if (userFoundByUsername) {
-        hashFound = userFoundByUsername.password;
-        user = userFoundByUsername;
-    } else {
+    if (!userFound) {
         return res.status(400).send({
             heading: "Email or Username is not yet registered",
             message: "Please register first before logging in.",
         });
     }
+
+    const hashFound = userFound.password;
 
     const isPasswordCorrect: boolean = bcrypt.compareSync(password, hashFound);
 
@@ -123,7 +120,7 @@ export const loginUser: RequestHandler = async (
         });
     }
 
-    const { password: remove, ...userWithoutHash } = user;
+    const { password: remove, ...userWithoutHash } = userFound;
 
     const token = createAccessToken(userWithoutHash);
 
