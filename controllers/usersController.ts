@@ -3,17 +3,20 @@ import { PrismaClient, Prisma } from "@prisma/client";
 
 import { RequestHandler, Request, Response, NextFunction } from "express";
 
-import { createAccessToken } from "./utils/auth.js";
+import { createAccessToken } from "./utils/auth";
 
 import {
     SERVER_ERR_OBJ,
     HEADING_SUCCESS_REGISTRATION,
+    returnAuthSuccessObj,
+    AUTH_ERR_PASS_INC_OBJ,
+    AUTH_ERR_USER_NOT_REGISTERED_OBJ,
 } from "./utils/constants";
 
 const prisma = new PrismaClient();
 
-export const getAllUsers: RequestHandler = (req, res) => {
-    res.send("hit get users route");
+export const getAllUsers: RequestHandler = (req: Request, res: Response) => {
+    res.status(200).send("hit get users route");
 };
 
 export const registerUser: RequestHandler = async (
@@ -103,10 +106,7 @@ export const loginUser: RequestHandler = async (
         });
 
     if (!userFound) {
-        return res.status(400).send({
-            heading: "Email or Username is not yet registered",
-            message: "Please register first before logging in.",
-        });
+        return res.status(400).send(AUTH_ERR_USER_NOT_REGISTERED_OBJ);
     }
 
     const hashFound = userFound.password;
@@ -114,10 +114,7 @@ export const loginUser: RequestHandler = async (
     const isPasswordCorrect: boolean = bcrypt.compareSync(password, hashFound);
 
     if (!isPasswordCorrect) {
-        return res.status(400).send({
-            heading: "Password incorrect",
-            message: "Please ensure that password is correct.",
-        });
+        return res.status(400).send(AUTH_ERR_PASS_INC_OBJ);
     }
 
     const { password: remove, ...userWithoutHash } = userFound;
@@ -128,8 +125,5 @@ export const loginUser: RequestHandler = async (
         return res.status(500).send(SERVER_ERR_OBJ);
     }
 
-    return res.status(200).send({
-        heading: "Successfully logged in",
-        access: token,
-    });
+    return res.status(200).send(returnAuthSuccessObj(token));
 };
