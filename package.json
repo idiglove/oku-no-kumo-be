@@ -1,7 +1,7 @@
 {
     "name": "okunokumo.be",
     "version": "1.0.0",
-    "description": "All 2 test suites and 10 tests passed with no errors, achieving 71.61% test coverage. Notable successes include passing all authentication tests and successfully adding and approving reviews.",
+    "description": "",
     "main": "server.js",
     "scripts": {
         "test": "jest --setupFiles dotenv/config --verbose",
