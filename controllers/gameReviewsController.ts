@@ -1,10 +1,13 @@
 import { RequestHandler, Request, Response } from "express";
 
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, review } from "@prisma/client";
 import { create } from "domain";
 const prisma = new PrismaClient();
 
-import { SERVER_ERR_OBJ } from "./utils/constants";
+import {
+    SERVER_ERR_OBJ,
+    generateSuccessAddReviewResObj,
+} from "./utils/constants";
 
 export const addReview: RequestHandler = async (
     req: Request,
@@ -14,8 +17,10 @@ export const addReview: RequestHandler = async (
 
     const { content, username } = req.body;
 
+    //TODO: Implement check for when game id does not exist on the game table
+
     // After implementation of login authentication we will have to extract username from bearer token in the authorization headers of requests that need authorization
-    const createdReview: object = await prisma.review.create({
+    const createdReview: review = await prisma.review.create({
         data: {
             content: content,
             username: username,
@@ -24,10 +29,9 @@ export const addReview: RequestHandler = async (
     });
 
     if (createdReview) {
-        return res.status(201).send({
-            heading: `Review has been created`,
-            data: createdReview,
-        });
+        return res
+            .status(201)
+            .send(generateSuccessAddReviewResObj(createdReview));
     }
 
     return res.status(500).send(SERVER_ERR_OBJ);

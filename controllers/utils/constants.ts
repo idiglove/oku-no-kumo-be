@@ -1,3 +1,5 @@
+import { review } from "@prisma/client";
+
 export const HEADING_SUCCESS_REGISTRATION = "Registration successful";
 
 export const SERVER_ERR_OBJ = {
@@ -24,3 +26,34 @@ export const returnAuthSuccessObj = (token: string) => {
         access: token,
     };
 };
+
+export const HEADING_SUCCESS_ADD_REVIEW = "Successfully logged in";
+
+export function generateSuccessAddReviewResObj(createdReview: review) {
+    return {
+        heading: HEADING_SUCCESS_ADD_REVIEW,
+        data: createdReview,
+    };
+}
+
+export function generateSuccessApproveReviewResObj(
+    reviewId: number,
+    approvedReview: review
+) {
+    return {
+        heading: `Review with id ${reviewId} has been approved.`,
+        data: approvedReview,
+    };
+}
+
+export function generateReviewErrAlreadyApprovedResObj(reviewId: number) {
+    return {
+        heading: `Review with id ${reviewId} has already been approved.`,
+    };
+}
+
+export function generateReviewErrInvalidReviewIdResObj(reviewId: number) {
+    return {
+        heading: `Review with id ${reviewId} not found.`,
+    };
+}
