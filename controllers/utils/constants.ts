@@ -17,6 +17,13 @@ export const AUTH_ERR_USER_NOT_REGISTERED_OBJ = {
     message: "Please register first before logging in.",
 };
 
+export const AUTH_ERR_USER_NOT_REG_OR_NOT_ADMIN_OBJ = {
+    heading:
+        "Email or Username is not yet registered or does not have admin access.",
+    message:
+        "Please register first before logging in and request for admin access.",
+};
+
 export const HEADING_SUCCESS_LOGIN = "Successfully logged in";
 ``;
 
