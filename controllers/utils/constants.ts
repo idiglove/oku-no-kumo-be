@@ -1,4 +1,4 @@
-import { review } from "@prisma/client";
+import { review, game } from "@prisma/client";
 
 export const HEADING_SUCCESS_REGISTRATION = "Registration successful";
 
@@ -50,6 +50,13 @@ export function generateSuccessApproveReviewResObj(
     return {
         heading: `Review with id ${reviewId} has been approved.`,
         data: approvedReview,
+    };
+}
+
+export function generateSuccessGameCreatedResObj(game: game) {
+    return {
+        heading: `Game with id ${game.id} has been created.`,
+        data: game,
     };
 }
 
