@@ -4,7 +4,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -33,7 +33,7 @@ model game {
   description String   @db.Text
   review      review[]
 
-  @@fulltext([name])
+  // @@fulltext([name])
 }
 
 model review {

@@ -50,3 +50,16 @@ export const approveReview: RequestHandler = async (
 
     return res.status(500).send(SERVER_ERR_OBJ);
 };
+
+
+
+ export const deleteReview: RequestHandler = async (
+    req: Request,
+    res: Response
+) => {
+    const reviewId: number = Number(req.params.reviewId);
+     const deletedReview:review = await prisma.review.delete({
+     where: { id: reviewId },
+
+})
+}

@@ -16,5 +16,7 @@ reviewsRouter.patch("/:reviewId/approve",
     isAdmin,
     reviewsController.approveReview
 )
+//added delete route
+reviewsRouter.delete("/:reviewId/delete")
 
 export default reviewsRouter;
