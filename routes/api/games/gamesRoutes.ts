@@ -12,9 +12,7 @@ gamesRouter.use("/:gameId/reviews", gameReviewsRouter);
 
 // Games have
 
-gamesRouter.get("/", (req: Request, res: Response) => {
-    res.send("hit get all games");
-});
+gamesRouter.get("/", gamesController.getGames);
 
 gamesRouter.post(
     "/",

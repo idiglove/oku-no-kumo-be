@@ -34,7 +34,7 @@ export const returnAuthSuccessObj = (token: string) => {
     };
 };
 
-export const HEADING_SUCCESS_ADD_REVIEW = "Successfully logged in";
+export const HEADING_SUCCESS_ADD_REVIEW = "Successfully created a review!";
 
 export function generateSuccessAddReviewResObj(createdReview: review) {
     return {

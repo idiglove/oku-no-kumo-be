@@ -25,3 +25,18 @@ export const addGame: RequestHandler = async (req: Request, res: Response) => {
 
     return res.status(500).send(SERVER_ERR_OBJ);
 };
+
+export const getGames: RequestHandler = async (req: Request, res: Response) => {
+    const games = await prisma.game.findMany({
+        select: {
+            id: true,
+            name: true,
+        },
+    });
+
+    if (games) {
+        return res.status(200).json(games);
+    }
+
+    return res.status(500).send(SERVER_ERR_OBJ);
+};
