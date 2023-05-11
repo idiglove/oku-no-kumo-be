@@ -10,6 +10,7 @@ import {
     generateReviewErrInvalidReviewIdResObj,
 } from "./utils/constants";
 
+//approve a review
 export const approveReview: RequestHandler = async (
     req: Request,
     res: Response
@@ -52,7 +53,7 @@ export const approveReview: RequestHandler = async (
 };
 
 
-
+//delete a review 
  export const deleteReview: RequestHandler = async (
     req: Request,
     res: Response
@@ -63,5 +64,19 @@ export const approveReview: RequestHandler = async (
 
 })
 }
+
+//reject a review 
+export const rejectReview: RequestHandler = async (
+    req: Request,
+    res: Response
+) => {
+    const reviewId: number = Number(req.params.reviewId);
+    const rejectedReview: review = await prisma.review.update({
+        where: { id: reviewId },
+        data: {
+          
+        },
+    });
+};
 
 

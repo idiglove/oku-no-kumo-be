@@ -20,7 +20,9 @@ reviewsRouter.patch("/:reviewId/approve",
 reviewsRouter.delete("/:reviewId/delete")
 
 //Ability to reject a review
-reviewsRouter.put("/:reviewId/request")
+reviewsRouter.put("/:reviewId/request",
+    reviewsController.rejectReview 
+)
 
 
 export default reviewsRouter;
