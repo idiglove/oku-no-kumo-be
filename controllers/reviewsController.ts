@@ -74,7 +74,7 @@ export const rejectReview: RequestHandler = async (
     const rejectedReview: review = await prisma.review.update({
         where: { id: reviewId },
         data: {
-          
+            isApproved: false,
         },
     });
 };
