@@ -57,5 +57,8 @@
     },
     "lint-staged": {
         "**/*": "prettier --write --ignore-unknown"
-    }
+    },
+    "prisma": {
+  "seed": "ts-node ./prisma/seed.ts"
+}
 }

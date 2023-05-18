@@ -28,21 +28,22 @@ model user_role {
 }
 
 model game {
-  id          Int    @id @unique  @default(autoincrement())
-  name        String @db.VarChar(50)
-  description String @db.Text
-  review review[]
+  id          Int      @id @unique @default(autoincrement())
+  name        String   @db.VarChar(50)
+  description String   @db.Text
+  review      review[]
 
-  @@fulltext([name])
+  // @@fulltext([name])
 }
 
 model review {
-  id       Int    @id @default(autoincrement())
-  user     user   @relation(fields: [username], references: [username])
-  username String
-  game     game   @relation(fields: [gameId], references: [id])
-  gameId   Int
-
+  id         Int      @id @default(autoincrement())
+  user       user     @relation(fields: [username], references: [username])
+  username   String
+  game       game     @relation(fields: [gameId], references: [id])
+  gameId     Int
+  updatedAt  DateTime @updatedAt
   content    String
-  isApproved Boolean    @default(false)
+  isApproved Boolean  @default(false)
+  isRejected Boolean  @default(true)
 }

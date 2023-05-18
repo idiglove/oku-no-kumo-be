@@ -16,5 +16,14 @@ reviewsRouter.patch("/:reviewId/approve",
     isAdmin,
     reviewsController.approveReview
 )
+//added delete route
+reviewsRouter.delete("/:reviewId/delete")
+
+//Ability to reject a review
+reviewsRouter.put("/:reviewId/request",
+    reviewsController.rejectReview 
+)
+
 
 export default reviewsRouter;
+
