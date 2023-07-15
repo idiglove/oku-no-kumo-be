@@ -1,9 +1,15 @@
                                        Cohort 1 Training project for backend
 
-This is a Next.js project bootstrapped with create-next-app.
+Aint Board Game - Backend
+
+Node.js
+Npm
+Prisma
+Express
+
 
 Getting Started First, run the development server:
 
-npm run server
+npm run start 
 
-or
+http://localhost:5000 for all routes 
